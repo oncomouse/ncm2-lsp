@@ -22,7 +22,7 @@ let g:ncm2_lsp#source = extend(g:ncm2_lsp#source,
 function! ncm2_lsp#init() abort
   call ncm2#register_source(g:ncm2_lsp#source)
 endfunction
-function! ncm2_bufword#on_warmup(ctx)
+function! ncm2_lsp#on_warmup(ctx)
     call g:ncm2_lcm2#proc.jobstart()
 endfunc
 function! ncm2_lsp#on_complete(ctx)
@@ -33,4 +33,7 @@ function! ncm2_lsp#on_complete(ctx)
     return
   endif
   call g:ncm2_lsp#proc.try_notify('on_complete', a:ctx)
+endfunction
+function! ncm2_lsp#retrigger() abort
+  call ncm2_lsp#on_complete(ncm2#context('lsp))
 endfunction

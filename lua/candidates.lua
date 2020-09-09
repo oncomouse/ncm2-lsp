@@ -11,7 +11,7 @@ local get_candidates = function(_, _, result)
 	api.nvim_set_var("ncm2_lsp#_results", result)
 	api.nvim_set_var("ncm2_lsp#_success", success)
 	api.nvim_set_var("ncm2_lsp#_requested", true)
-	api.nvim_call_function("ncm2#auto_trigger", {})
+	api.nvim_call_function("ncm2_lsp#retrigger", {})
 end
 
 local request_candidates = function(arguments)
