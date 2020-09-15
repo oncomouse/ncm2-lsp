@@ -81,14 +81,14 @@ class Source(Ncm2Source):
             items = results
         for rec in items:
             if "textEdit" in rec and rec["textEdit"] is not None:
-                textEdit = rec["textEdit"]
-                if textEdit["range"]["start"] == textEdit["range"]["end"]:
+                text_edit = rec["textEdit"]
+                if text_edit["range"]["start"] == text_edit["range"]["end"]:
                     previous_input = self.vim.vars["ncm2_lsp#_prev_input"]
                     complete_position = self.vim.vars["ncm2_lsp#_complete_position"]
-                    new_text = textEdit["newText"]
+                    new_text = text_edit["newText"]
                     word = f"{previous_input[complete_position:]}{new_text}"
                 else:
-                    word = textEdit["newText"]
+                    word = text_edit["newText"]
             elif rec.get("insertText", ""):
                 if rec.get("insertTextFormat", 1) != 1:
                     word = rec.get("entryName", rec.get("label"))
