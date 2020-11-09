@@ -12,4 +12,4 @@ This is a port of [deoplete-lsp](https://github.com/Shougo/deoplete-lsp) to ncm2
 
 https://github.com/neovim/nvim-lsp
 
-Status: Current with [deoplete-lsp#17cd3fa](https://github.com/Shougo/deoplete-lsp/commit/17cd3fae3044eb8148bc22167257d4ae13165eb1)
+Status: Current with [deoplete-lsp#fb51bfe](https://github.com/Shougo/deoplete-lsp/commit/fb51bfebd8ac57282154d119f80368b4b94199b7)
