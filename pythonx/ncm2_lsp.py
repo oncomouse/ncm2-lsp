@@ -32,6 +32,34 @@ LSP_KINDS = [
     "TypeParameter",
 ]
 
+LSP_KINDS_WITH_ICONS = [
+    " [text]     ",
+    " [method]   ",
+    " [function] ",
+    " [constructor]",
+    "ﰠ [field]    ",
+    "𝒙 [variable] ",
+    " [class]    ",
+    " [interface]",
+    " [module]   ",
+    " [property] ",
+    " [unit]     ",
+    " [value]    ",
+    " [enum]     ",
+    " [key]      ",
+    "﬌ [snippet]  ",
+    " [color]    ",
+    " [file]     ",
+    " [refrence] ",
+    " [folder]   ",
+    " [enumMember]",
+    " [constant] ",
+    " [struct]   ",
+    " [event]    ",
+    " [operator] ",
+    " [typeParameter]",
+]
+
 
 class Source(Ncm2Source):
     def __init__(self, vim):
@@ -41,6 +69,9 @@ class Source(Ncm2Source):
         self.vim.vars["ncm2_lsp#_success"] = False
         self.vim.vars["ncm2_lsp#_requested"] = False
         self.vim.vars["ncm2_lsp#_prev_input"] = ""
+        if "ncm2_lsp#use_icons_for_candidates" not in self.vim.vars:
+            self.vim.vars["ncm2_lsp#use_icons_for_candidates"] = False
+        self.lsp_kinds = LSP_KINDS
 
     def on_complete(self, context):
         candidates = []
@@ -53,8 +84,7 @@ class Source(Ncm2Source):
                 self.vim.vars["ncm2_lsp#_prev_input"] = context["base"]
                 self.vim.vars["ncm2_lsp#_complete_position"] = context["startccol"]
 
-                params = self.vim.call(
-                    "luaeval", "vim.lsp.util.make_position_params()")
+                params = self.vim.call("luaeval", "vim.lsp.util.make_position_params()")
 
                 self.vim.call(
                     "luaeval",
@@ -72,13 +102,15 @@ class Source(Ncm2Source):
         if isinstance(results, dict):
             if "items" not in results:
                 self.print_error(
-                    'LSP results does not have "items" key:{}'.format(
-                        str(results))
+                    'LSP results does not have "items" key:{}'.format(str(results))
                 )
                 return []
             items = results["items"]
         else:
             items = results
+        use_icons = self.vim.vars["ncm2_lsp#use_icons_for_candidates"]
+        if use_icons:
+            self.lsp_kinds = LSP_KINDS_WITH_ICONS
         for rec in items:
             if "textEdit" in rec and rec["textEdit"] is not None:
                 text_edit = rec["textEdit"]
@@ -109,7 +141,7 @@ class Source(Ncm2Source):
             }
 
             if isinstance(rec.get("kind"), int):
-                item["kind"] = LSP_KINDS[rec["kind"] - 1]
+                item["kind"] = self.lsp_kinds[rec["kind"] - 1]
             elif rec.get("insertTextFormat") == 2:
                 item["kind"] = "Snippet"
 

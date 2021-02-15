@@ -2,6 +2,7 @@ if get(s:, 'loaded', 0)
   finish
 endif
 let s:loaded = 1
+let g:ncm2_lsp#use_icons_for_candidates = get(g:, 'use_icons_for_candidates', v:false)
 let g:ncm2_lsp#enabled = get(g:, 'ncm2_lsp#enabled',  1)
 let g:ncm2_lsp#mark = get(g:, 'ncm2_lsp#mark', 'lsp')
 let g:ncm2_lsp#name = get(g:, 'ncm2_lsp#mark', 'lsp')
